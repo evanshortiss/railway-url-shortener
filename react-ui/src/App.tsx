@@ -71,13 +71,13 @@ function App() {
 
   const noteEls = links.map(n => {
     const create = new Date(n.create_ts)
-    const expire = create.setHours(create.getHours() + VITE_LINK_TTL_HOURS)
+    create.setHours(create.getHours() + VITE_LINK_TTL_HOURS)
 
     return (
       <li key={n.id} className='flex mt-4'>
         <a href={n.url} target='_blank' className='text-left underline text-indigo-600 w-5/12 align-middle my-1 text-left'>{n.url}</a>
         <a href={buildShortUrl(n.shortId)} target='_blank' className='text-left underline text-indigo-600 w-5/12 align-middle my-1 text-left'>{buildShortUrl(n.shortId)}</a>
-        <p className='text-center w-2/12 align-middle my-1'>{expire.toLocaleString()}</p>
+        <p className='text-center w-2/12 align-middle my-1'>{create.toLocaleString()}</p>
       </li>
     )
   })
