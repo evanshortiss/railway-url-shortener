@@ -2,8 +2,9 @@
 # the React appliaction using Vite and TypeScript tooling
 FROM registry.access.redhat.com/ubi8/nodejs-18 as build
 
-# Default value for the short URL host
+# Default value for build environment variables
 ENV VITE_SHORT_URL_HOST https://l.nk.city/
+ENV VITE_LINK_TTL_HOURS 24
 
 WORKDIR /usr/src/app
 
