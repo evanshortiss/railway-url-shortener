@@ -1,0 +1,35 @@
+html
+  head
+    title Redirecting!
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css")
+    style.
+      .container {
+        padding: 4em 0;
+        text-align: center;
+      }
+  body
+    div.container 
+      h1 Redirecting!
+      p
+        | Sending you to&nbsp;
+        a(href="#{url}") #{url}
+        |  in a moment!
+
+      progress(id="progress" value="1" max="100")
+    script.
+      const progressEl = document.getElementById('progress')
+      const interval = #{redirectDelay}/100
+
+      function updateProgress () {
+        const value = progressEl.getAttribute('value')
+        if (parseInt(value) >= 100) {
+          return
+        }
+        progressEl.setAttribute('value', parseInt(value) + 1)
+        setTimeout(() => updateProgress(), interval)
+      }
+
+      updateProgress()
+      
+      setTimeout(function () { window.location = "#{url}" }, #{redirectDelay})
+      

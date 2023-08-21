@@ -1,0 +1,7 @@
+# This .env file will be generated using the "railway run"
+# command from the example in the README
+.env
+
+# Keep the data dir, but ignore backups inside
+data/*
+!data/.keepme
