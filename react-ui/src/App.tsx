@@ -6,7 +6,7 @@ import { from } from 'env-var'
 function App() {
   const [links, setLinks] = useState<Link[]>([])
   const [url, setUrl] = useState<string|undefined>()
-  const { get } = from(import.meta.env)
+  const { get } = from({ variables: import.meta.env })
 
   const VITE_SHORT_URL_HOST = get('VITE_SHORT_URL_HOST').required().asUrlString()
   const VITE_LINK_TTL_HOURS = get('VITE_LINK_TTL_HOURS').required().asIntPositive()
@@ -72,7 +72,7 @@ function App() {
   const noteEls = links.map(n => {
     const create = new Date(n.create_ts)
     const expire = create.setHours(create.getHours() + VITE_LINK_TTL_HOURS)
-    
+
     return (
       <li key={n.id} className='flex mt-4'>
         <a href={n.url} target='_blank' className='text-left underline text-indigo-600 w-5/12 align-middle my-1 text-left'>{n.url}</a>
