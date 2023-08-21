@@ -6,7 +6,7 @@ import { from } from 'env-var'
 function App() {
   const [links, setLinks] = useState<Link[]>([])
   const [url, setUrl] = useState<string|undefined>()
-  const { get } = from({ variables: import.meta.env })
+  const { get } = from(import.meta.env)
 
   const VITE_SHORT_URL_HOST = get('VITE_SHORT_URL_HOST').required().asUrlString()
   const VITE_LINK_TTL_HOURS = get('VITE_LINK_TTL_HOURS').required().asIntPositive()
