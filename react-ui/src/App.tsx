@@ -92,7 +92,7 @@ function App() {
 
   return (
     <div className='container m-auto text-center'>
-      <h1 className='text-4xl py-10'>Railway Quarkus URL Shortener</h1>
+      <h1 className='text-4xl py-10'>Link City</h1>
       <form onSubmit={(e) => createLink(e, url || '')}>
         <input
           value={url ? url : ''}
