@@ -7,10 +7,8 @@ const { from } = require('env-var')
  * @property {string} HOST
  * @property {number} PORT
  * @property {string} NODE_ENV
- * @property {string} BASIC_AUTH_USER
- * @property {string} BASIC_AUTH_PASS
- * @property {string} RAILWAY_VOLUME_MOUNT_PATH
- * @property {string} MORGAN_FORMAT
+ * @property {string} API_URL
+ * @property {number} LINK_INFO_TIMEOUT
  */
 
 
@@ -33,7 +31,7 @@ module.exports = function getConfig (env) {
     NODE_ENV: get('NODE_ENV').default('production').asEnum(['development', 'production']),
     MORGAN_FORMAT: get('MORGAN_FORMAT').default('tiny').asString(),
 
-    LINK_INFO_SERVICE_HOST: get('LINK_INFO_SERVICE_HOST').default('http://shortener-api').asString(),
+    API_URL: get('API_URL').required().asString(),
     LINK_INFO_TIMEOUT: get('LINK_INFO_TIMEOUT').default('2000').asIntPositive()
   }
 }

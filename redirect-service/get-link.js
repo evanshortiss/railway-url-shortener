@@ -10,7 +10,7 @@ const log = require('barelog')
  */
 module.exports = function createLinkGetter (config) {
   const {
-    LINK_INFO_SERVICE_HOST,
+    API_URL,
     LINK_INFO_TIMEOUT
   }  = config
 
@@ -23,7 +23,7 @@ module.exports = function createLinkGetter (config) {
     const timeout = setTimeout(() => controller.abort(), LINK_INFO_TIMEOUT)
 
     try {
-      const url = new URL(`/links/${linkId}`, LINK_INFO_SERVICE_HOST)
+      const url = new URL(`/links/${linkId}`, API_URL)
 
       log('fetching info for link from ', url.toString())
 
