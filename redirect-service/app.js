@@ -39,9 +39,9 @@ module.exports = function creatApp (config) {
 
     try {
       const linkInfo = await getLinkInfo(linkId)
+      log('link info', linkInfo)
 
-      if (linkInfo) {
-        log('link info', linkInfo)
+      if (linkInfo && linkInfo.active) {
         res.render('link.found.pug', {
           url: linkInfo.url,
           redirectDelay: 3000
