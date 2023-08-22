@@ -12,8 +12,7 @@ railway run -s "Quarkus Backend" env | grep -E 'PG.*=' > .env
 
 docker build . -t pg-query
 
-docker run --rm --name pg-query --env-file .env \
-pg-query
+docker run --rm --name pg-query --env-file .env pg-query
 ```
 
 ## Run on Railway as a Cron Job
