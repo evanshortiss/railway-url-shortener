@@ -70,45 +70,64 @@ function App() {
   }
 
   const noteEls = links.map(n => {
-    const create = new Date(n.create_ts)
-    create.setHours(create.getHours() + VITE_LINK_TTL_HOURS)
+    const expire = new Date(n.create_ts)
+
+    expire.setHours(expire.getHours() + VITE_LINK_TTL_HOURS)
+
+    const remainingHours = (expire.getTime() - Date.now()) / 1000 / 60 / 60
+
+    let expireString: string
+
+    if (Math.round(remainingHours) === 1) {
+      expireString = `${Math.round(remainingHours)} hour`
+    } else if (remainingHours < 1 && remainingHours > 0) {
+      const mins = Math.round(remainingHours * 60)
+      
+      expireString = `${mins} ${mins === 1 ? 'min' : 'mins'}`
+    } else if (remainingHours <= 0) {
+      expireString = 'Expired'
+    } else {
+      expireString = `${Math.round(remainingHours)} hours`
+    }
 
     return (
-      <li key={n.id} className='flex mt-4'>
-        <a href={n.url} target='_blank' className='text-left underline text-ellipsis overflow-hidden whitespace-nowrap text-indigo-600 w-6/12 pr-1 align-middle my-1 text-left'>{n.url}</a>
-        <a href={buildShortUrl(n.shortId)} target='_blank' className='text-left underline text-indigo-600 w-4/12 pr-1 align-middle my-1 text-left'>{buildShortUrl(n.shortId)}</a>
-        <p className='text-center w-2/12 align-middle my-1'>{create.toLocaleString()}</p>
+      <li key={n.id} className='flex mt-4 text-xl'>
+        <a href={buildShortUrl(n.shortId)} target='_blank' className='text-left underline text-sky-400 w-4/12 pr-2 align-middle my-1 text-left'>{buildShortUrl(n.shortId)}</a>
+        <a href={n.url} target='_blank' className='text-left underline text-ellipsis overflow-hidden whitespace-nowrap text-sky-400 w-6/12 pr-2 align-middle my-1 text-left'>{n.url}</a>
+        <p className='text-center w-2/12 align-middle my-1'>{expireString}</p>
       </li>
     )
   })
 
   noteEls.unshift(
-    <li key="hardcoded" className='flex mt-4'>
-      <p className='text-left font-bold w-6/12 pr-1 align-middle my-1 text-left'>Original URL</p>
+    <li key="hardcoded" className='flex mt-4 text-xl text-slate-300'>
       <p className='text-left font-bold w-4/12 pr-1 align-middle my-1 text-left'>Short URL</p>
-      <p className='text-center font-bold w-2/12 align-middle my-1'>Expires</p>
+      <p className='text-left font-bold w-6/12 pr-1 align-middle my-1 text-left'>Original URL</p>
+      <p className='text-center font-bold w-2/12 align-middle my-1'>Expires In</p>
     </li>
   )
 
   return (
-    <div className='container m-auto text-center'>
-      <h1 className='text-4xl py-10'>Link City</h1>
-      <form onSubmit={(e) => createLink(e, url || '')}>
+    <div className='text-center bg-gray-900 text-slate-100 w-screen h-screen'>
+      <h1 className='text-5xl pt-14 pb-10 font-bold italic underline'>li.nk city</h1>
+      <p className='text-slate-300'>Create a convenient short URL, you know, a li.nk!</p>
+      <form className='my-8' onSubmit={(e) => createLink(e, url || '')}>
         <input
           value={url ? url : ''}
           required={true}
           placeholder={'e.g "http://foo.bar/some-long-url"'}
-          className='mr-4 w-5/12 rounded-md p-2 border-solid border border-slate-200'
+          className='mr-4 text-xl w-4/12 rounded-md py-2 px-4 border-solid border border-slate-200 text-slate-900'
           onChange={(e) => setUrl(e.target.value)}
           type="text"
           name="content" />
 
         <input 
-          className="rounded-md py-2 px-6 bg-indigo-500 font-semibold text-white"
+          className="rounded-md text-xl py-2 px-6 bg-sky-500 font-semibold text-white"
           type="submit"
-          value="Create Short Link" />
+          value="Create li.nk" />
       </form>
-      <hr className='mt-4 mb-6 mx-12' />
+      {/* <hr className='mt-4 mb-6 mx-48' /> */}
+      <div className="border-b solid w-9/12 m-auto border-gray-500"></div>
       <ul className='max-w-screen-lg m-auto'>{noteEls}</ul>
     </div>
   )
