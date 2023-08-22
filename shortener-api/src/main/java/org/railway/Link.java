@@ -1,7 +1,6 @@
 package org.railway;
 
 import java.time.Instant;
-import java.util.Random;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 
@@ -10,7 +9,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Link extends PanacheEntity {
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     public String url;
     
     @Column(nullable = false)

@@ -11,7 +11,6 @@ import org.jboss.logging.Logger;
 
 import io.smallrye.mutiny.Uni;
 
-import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
