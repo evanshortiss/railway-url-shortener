@@ -69,35 +69,39 @@ function App() {
     return new URL(shortId, VITE_SHORT_URL_HOST).toString()
   }
 
-  const noteEls = links.map(n => {
-    const expire = new Date(n.create_ts)
+  const noteEls = links
+    .sort((a, b) => {
+      return new Date(a.create_ts).getTime() < new Date(b.create_ts).getTime() ? 1 : -1
+    })
+    .map(n => {
+      const expire = new Date(n.create_ts)
 
-    expire.setHours(expire.getHours() + VITE_LINK_TTL_HOURS)
+      expire.setHours(expire.getHours() + VITE_LINK_TTL_HOURS)
 
-    const remainingHours = (expire.getTime() - Date.now()) / 1000 / 60 / 60
+      const remainingHours = (expire.getTime() - Date.now()) / 1000 / 60 / 60
 
-    let expireString: string
+      let expireString: string
 
-    if (Math.round(remainingHours) === 1) {
-      expireString = `${Math.round(remainingHours)} hour`
-    } else if (remainingHours < 1 && remainingHours > 0) {
-      const mins = Math.round(remainingHours * 60)
-      
-      expireString = `${mins} ${mins === 1 ? 'min' : 'mins'}`
-    } else if (remainingHours <= 0) {
-      expireString = 'Expired'
-    } else {
-      expireString = `${Math.round(remainingHours)} hours`
-    }
+      if (Math.round(remainingHours) === 1) {
+        expireString = `${Math.round(remainingHours)} hour`
+      } else if (remainingHours < 1 && remainingHours > 0) {
+        const mins = Math.round(remainingHours * 60)
+        
+        expireString = `${mins} ${mins === 1 ? 'min' : 'mins'}`
+      } else if (remainingHours <= 0) {
+        expireString = 'Expired'
+      } else {
+        expireString = `${Math.round(remainingHours)} hours`
+      }
 
-    return (
-      <li key={n.id} className='flex mt-4 text-xl'>
-        <a href={buildShortUrl(n.shortId)} target='_blank' className='text-left underline text-sky-400 w-4/12 pr-2 align-middle my-1 text-left'>{buildShortUrl(n.shortId)}</a>
-        <a href={n.url} target='_blank' className='text-left underline text-ellipsis overflow-hidden whitespace-nowrap text-sky-400 w-6/12 pr-2 align-middle my-1 text-left'>{n.url}</a>
-        <p className='text-center w-2/12 align-middle my-1'>{expireString}</p>
-      </li>
-    )
-  })
+      return (
+        <li key={n.id} className='flex mt-4 text-xl'>
+          <a href={buildShortUrl(n.shortId)} target='_blank' className='text-left underline text-sky-400 w-4/12 pr-2 align-middle my-1 text-left'>{buildShortUrl(n.shortId)}</a>
+          <a href={n.url} target='_blank' className='text-left underline text-ellipsis overflow-hidden whitespace-nowrap text-sky-400 w-6/12 pr-2 align-middle my-1 text-left'>{n.url}</a>
+          <p className='text-center w-2/12 align-middle my-1'>{expireString}</p>
+        </li>
+      )
+    })
 
   noteEls.unshift(
     <li key="hardcoded" className='flex mt-4 text-xl text-slate-300'>
