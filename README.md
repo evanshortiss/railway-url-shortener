@@ -20,6 +20,13 @@ By deploying and using it you'll learn how to:
 * Use [Custom Domains](https://docs.railway.app/deploy/exposing-your-app#custom-domains) for your application(s).
 * Use [Config as Code](https://docs.railway.app/deploy/config-as-code) to configure services.
 
+## Architecture
+
+<div align="center">
+  <img width="80%" src="architecture.png" alt="URL Shortener on Railway Architectire" title="URL Shortener on Railway Architectire"></img>
+</div>
+
+
 ## Local Development
 
 ### Prerequisites
