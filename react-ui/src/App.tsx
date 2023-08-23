@@ -69,7 +69,7 @@ function App() {
     return new URL(shortId, VITE_SHORT_URL_HOST).toString()
   }
 
-  const noteEls = links
+  const linkEls = links
     .sort((a, b) => {
       return new Date(a.create_ts).getTime() < new Date(b.create_ts).getTime() ? 1 : -1
     })
@@ -103,7 +103,7 @@ function App() {
       )
     })
 
-  noteEls.unshift(
+  linkEls.unshift(
     <li key="hardcoded" className='flex mt-4 text-xl text-slate-300'>
       <p className='text-left font-bold w-4/12 pr-1 align-middle my-1 text-left'>Short URL</p>
       <p className='text-left font-bold w-6/12 pr-1 align-middle my-1 text-left'>Original URL</p>
@@ -132,7 +132,7 @@ function App() {
       </form>
       {/* <hr className='mt-4 mb-6 mx-48' /> */}
       <div className="border-b solid w-9/12 m-auto border-gray-500"></div>
-      <ul className='max-w-screen-lg m-auto'>{noteEls}</ul>
+      <ul className='max-w-screen-lg m-auto'>{linkEls}</ul>
     </div>
   )
 }

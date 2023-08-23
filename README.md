@@ -19,3 +19,62 @@ By deploying and using it you'll learn how to:
 * Configure [Healthchecks](https://docs.railway.app/deploy/healthchecks) for applications.
 * Use [Custom Domains](https://docs.railway.app/deploy/exposing-your-app#custom-domains) for your application(s).
 * Use [Config as Code](https://docs.railway.app/deploy/config-as-code) to configure services.
+
+## Local Development
+
+### Prerequisites
+
+1. Install Node.js v18 ([nvm.sh](https://nvm.sh) is a good way to install and manage Node.js on your development machine).
+1. Install JDK 17 ([instructions from Red Hat](https://developers.redhat.com/products/openjdk/download#assembly-field-downloads-page-content-98235)).
+1. Install the [`railway` CLI](https://docs.railway.app/develop/cli).
+
+### Setup
+
+Once you complete the steps in each subheading, you can visit
+http://localhost:5173/ to interact with the application and create shortlinks.
+
+#### Postgres
+
+_NOTE: You could use an alternative Postgres during local development, but this guide will show how to connect to a remote Postgres instance provided by Railway._
+
+Start by creating a project on [railway.app](https://railway.app) and adding a Postgres database to it.
+
+Next, use the **+ New** icon in the top-right to create an **Empty Service** on your project screen on [railway.app](https://railway.app), then select the new service's **Variables** tab and use **Variable Reference** to add the Postgres variables.
+
+#### React UI
+
+This will listen on http://localhost:5173/
+
+```bash
+cd react-ui
+npm ci
+npm run dev
+```
+
+#### Link Shortener API
+
+This will listen on http://localhost:8181/. Swagger API documentation will
+be available at http://localhost:8181/q/dev/.
+
+```bash
+cd shortener-api
+
+# Login to the railway CLI and select your project with the Postgres
+# and empty service with Postgres variables 
+railway login
+railway link
+
+railway run ./mvnw quarkus:dev
+```
+
+_NOTE: If there's an error configuring the database schema, make a one time change to `quarkus.hibernate-orm.database.generation` in application.properties to `create` then start the application again._
+
+#### Redirector Service
+
+This will listen on http://localhost:8080/
+
+```bash
+cd redirect-service
+npm ci
+npm run dev
+```

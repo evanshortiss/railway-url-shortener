@@ -1,4 +1,4 @@
-# quarkus-react-notes
+# URL Shortener API
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
