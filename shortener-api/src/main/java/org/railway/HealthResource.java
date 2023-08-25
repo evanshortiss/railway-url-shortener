@@ -44,6 +44,7 @@ public class HealthResource {
                 return null;
             } else {
                 Log.error("Health check failed: DB unavailable.");
+                System.exit(1);
                 return null;
             }
         });
