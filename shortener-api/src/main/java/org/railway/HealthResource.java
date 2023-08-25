@@ -35,7 +35,7 @@ public class HealthResource {
         });
     }
     
-    @Scheduled(every = "8s", delayed = "5s")
+    @Scheduled(every = "60s", delayed = "5s")
     Uni<Void> checkDatabaseConnectivity () {
         Log.debug("Running health check due to schedule.");
         return hasDatabaseConnectivity().map((connected) -> {
