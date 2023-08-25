@@ -21,20 +21,14 @@ public class HealthResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Uni<Response> getHealth() {
-        Log.debug("Running health check");
+        Log.info("Running health check");
         return sessionFactory.withTransaction((session, transaction) -> {
             return session.createNativeQuery("SELECT 1")
                 .getSingleResult()
                 .map((result) -> {
-                    if (result.equals(1)) {
-                        Log.debug("Health check passed. Returning HTTP 200");
-                        return Response.ok(new Health()).build();
-                    } else {
-                        Log.warn("Health check failed due to broken database connectivity. Returning HTTP 500.");
-                        return Response.serverError().build();
-                    }
-                })
-                .onFailure().recoverWithItem(Response.serverError().build());
+                    Log.info("Health check passed. Returning HTTP 200");
+                    return Response.ok(new Health()).build();
+                });
         });
     }
 }
