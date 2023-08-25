@@ -1,9 +1,12 @@
 package org.railway;
 
+import java.time.Duration;
+
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.jboss.logging.Logger;
 
 import io.quarkus.scheduler.Scheduled;
+import io.smallrye.mutiny.TimeoutException;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -38,16 +41,17 @@ public class HealthResource {
     @Scheduled(every = "60s", delayed = "5s")
     Uni<Void> checkDatabaseConnectivity () {
         Log.info("Running health check due to schedule.");
-        return hasDatabaseConnectivity().map((connected) -> {
-            if (connected == true) {
-                Log.info("Health check passed.");
-                return null;
-            } else {
-                Log.error("Health check failed: DB unavailable.");
-                System.exit(1);
-                return null;
-            }
-        });
+        return hasDatabaseConnectivity()
+            .map((connected) -> {
+                if (connected == true) {
+                    Log.info("Health check passed.");
+                    return null;
+                } else {
+                    Log.error("Health check failed: DB unavailable.");
+                    System.exit(1);
+                    return null;
+                }
+            });
     }
 
     Uni<Boolean> hasDatabaseConnectivity () {
@@ -62,6 +66,11 @@ public class HealthResource {
                     Log.error("Health check failed on Postgres query.");
                     return Uni.createFrom().item(false);
                 });
+            })
+            .ifNoItem().after(Duration.ofMillis(5000)).fail()
+            .onFailure(TimeoutException.class).recoverWithUni(() -> {
+                Log.warn("Health check failed: Timeout waiting for DB.");
+                return Uni.createFrom().item(false);
             })
             .onFailure().recoverWithUni(() -> {
                 Log.error("Health check failed before executing Postgres query.");
